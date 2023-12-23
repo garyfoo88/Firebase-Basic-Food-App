@@ -2,8 +2,8 @@ import {
   randomNumberBetween,
   getRandomDateAfter,
   getRandomDateBefore,
-} from "@/src/lib/utils.js";
-import { randomData } from "@/src/lib/randomData.js";
+} from "@/src/lib/utils";
+import { randomData } from "@/src/lib/randomData";
 
 import { Timestamp } from "firebase/firestore";
 

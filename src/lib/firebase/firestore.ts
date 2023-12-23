@@ -20,6 +20,7 @@ import {
 } from "firebase/firestore";
 
 import { db } from "@/src/lib/firebase/firebase";
+import { RestaurantFilter } from "../types";
 
 export async function updateRestaurantImageReference(
   restaurantId: string,
@@ -118,12 +119,9 @@ function applyQueryFilters(
   return q;
 }
 
-export async function getRestaurants(filters: {
-  category: string;
-  city: string;
-  price: string;
-  sort: string;
-}) {
+export async function getRestaurants(
+  filters: RestaurantFilter
+): Promise<{ timestamp: any; id: string }[]> {
   let q = query(collection(db, "restaurants"));
 
   q = applyQueryFilters(q, filters);
@@ -139,7 +137,7 @@ export async function getRestaurants(filters: {
 }
 
 export function getRestaurantsSnapshot(
-  cb: (
+  callback: (
     data: {
       timestamp: number;
       id: string;
@@ -152,7 +150,7 @@ export function getRestaurantsSnapshot(
     sort: string;
   }
 ) {
-  if (typeof cb !== "function") {
+  if (typeof callback !== "function") {
     console.log("Error: The callback parameter is not a function");
     return;
   }
@@ -160,6 +158,7 @@ export function getRestaurantsSnapshot(
   let q = query(collection(db, "restaurants"));
   q = applyQueryFilters(q, filters);
 
+  // onSnapshot is a method used to listen for real-time updates to a query.
   const unsubscribe = onSnapshot(q, (querySnapshot) => {
     const results = querySnapshot.docs.map((doc) => {
       return {
@@ -170,7 +169,7 @@ export function getRestaurantsSnapshot(
       };
     });
 
-    cb(results);
+    callback(results);
   });
 
   return unsubscribe;
