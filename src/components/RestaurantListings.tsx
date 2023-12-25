@@ -74,10 +74,10 @@ const RestaurantMetadata = ({ restaurant }: Restaurants) => (
 export default function RestaurantListings({
   initialRestaurants,
   searchParams,
-}: {
+}: Readonly<{
   initialRestaurants: { timestamp: any; id: string }[];
   searchParams: any;
-}) {
+}>) {
   const router = useRouter();
 
   // The initial filters are the search params from the URL, useful for when the user refreshes the page

@@ -9,7 +9,9 @@ export const dynamic = "force-dynamic";
 // This line also forces this route to be server-side rendered
 // export const revalidate = 0;
 
-export default async function Home({ searchParams }: { [key: string]: any }) {
+export default async function Home({
+  searchParams,
+}: Readonly<{ [key: string]: any }>) {
   // Using seachParams which Next.js provides, allows the filtering to happen on the server-side, for example:
   // ?city=London&category=Indian&sort=Review
   const restaurants = await getRestaurants(searchParams);

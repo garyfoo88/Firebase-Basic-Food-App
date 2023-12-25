@@ -19,7 +19,7 @@ function FilterSelect({
   onChange,
   name,
   icon,
-}: FilterSelectProps) {
+}: Readonly<FilterSelectProps>) {
   return (
     <div>
       <img src={icon} alt={label} />

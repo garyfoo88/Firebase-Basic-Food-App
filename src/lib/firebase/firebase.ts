@@ -39,7 +39,7 @@ export async function getAuthenticatedAppForUser(
 
   const ADMIN_APP_NAME = "firebase-frameworks";
   const adminApp =
-    getAdminApps().find((it) => it.name === ADMIN_APP_NAME) ||
+    getAdminApps().find((it) => it.name === ADMIN_APP_NAME) ??
     initializeAdminApp(
       {
         credential: credential.applicationDefault(),
@@ -47,7 +47,7 @@ export async function getAuthenticatedAppForUser(
       ADMIN_APP_NAME
     );
 
-  const adminAuth = getAdminAuth(firebaseApp);
+  const adminAuth = getAdminAuth(adminApp);
   const noSessionReturn = { app: null, currentUser: null };
 
   if (!session) {
