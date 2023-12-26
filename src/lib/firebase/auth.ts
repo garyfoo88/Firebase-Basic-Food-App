@@ -7,6 +7,7 @@ import {
 } from "firebase/auth";
 
 import { auth } from "@/src/lib/firebase/firebase";
+import { setCookie } from "cookies-next";
 
 export function onAuthStateChanged(cb: NextOrObserver<User>) {
   return _onAuthStateChanged(auth, cb);
@@ -16,7 +17,9 @@ export async function signInWithGoogle() {
   const provider = new GoogleAuthProvider();
 
   try {
-    await signInWithPopup(auth, provider);
+    const userCreds = await signInWithPopup(auth, provider);
+    const idToken = await userCreds.user.getIdToken();
+    return setCookie("__session", idToken);
   } catch (error) {
     console.error("Error signing in with Google", error);
   }

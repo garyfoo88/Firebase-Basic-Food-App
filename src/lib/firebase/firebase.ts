@@ -4,7 +4,7 @@ import {
   getApps as getAdminApps,
 } from "firebase-admin/app";
 import { getAuth as getAdminAuth } from "firebase-admin/auth";
-import { getAuth, signInWithCustomToken } from "firebase/auth";
+import { getAuth } from "firebase/auth";
 import { getFirestore } from "firebase/firestore";
 import { getStorage } from "firebase/storage";
 import { credential } from "firebase-admin";
@@ -57,28 +57,28 @@ export async function getAuthenticatedAppForUser(
     if (!session) return noSessionReturn;
   }
 
-  const decodedIdToken = await adminAuth.verifySessionCookie(session);
+  const decodedIdToken = await adminAuth.verifyIdToken(session);
 
   const app = initializeAuthenticatedApp(decodedIdToken.uid);
   const auth = getAuth(app);
 
   // handle revoked tokens
   const isRevoked = !(await adminAuth
-    .verifySessionCookie(session, true)
+    .verifyIdToken(session, true)
     .catch((e) => console.error(e.message)));
   if (isRevoked) return noSessionReturn;
 
-  // authenticate with custom token
-  if (auth.currentUser?.uid !== decodedIdToken.uid) {
-    // TODO(jamesdaniels) get custom claims
-    const customToken = await adminAuth
-      .createCustomToken(decodedIdToken.uid)
-      .catch((e) => console.error(e.message));
+  //  authenticate with custom token (Commented out due to infinite signin loop)
+  // if (auth.currentUser?.uid !== decodedIdToken.uid) {
+  //   // TODO(jamesdaniels) get custom claims
+  //   const customToken = await adminAuth
+  //     .createCustomToken(decodedIdToken.uid)
+  //     .catch((e) => console.error(e.message));
 
-    if (!customToken) return noSessionReturn;
+  //   if (!customToken) return noSessionReturn;
 
-    await signInWithCustomToken(auth, customToken);
-  }
+  //   await signInWithCustomToken(auth, customToken);
+  // }
   console.log("server: ", app);
   return { app, currentUser: auth.currentUser };
 }

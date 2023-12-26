@@ -2,9 +2,9 @@
 import React, { useState, useEffect } from "react";
 import Link from "next/link";
 import {
+  onAuthStateChanged,
   signInWithGoogle,
   signOut,
-  onAuthStateChanged,
 } from "@/src/lib/firebase/auth";
 import { addFakeRestaurantsAndReviews } from "@/src/lib/firebase/firestore";
 import { useRouter } from "next/navigation";
@@ -26,6 +26,7 @@ function useUserSession(initialUser: User | null | undefined) {
 
   useEffect(() => {
     onAuthStateChanged((authUser) => {
+      console.log("authUser", authUser);
       if (user === undefined) return;
 
       // refresh when user changed to ease testing
@@ -43,7 +44,6 @@ export default function Header({
   initialUser,
 }: Readonly<{ initialUser: User | null | undefined }>) {
   const user = useUserSession(initialUser);
-
   const handleSignOut = (
     event: React.MouseEvent<HTMLButtonElement, MouseEvent>
   ) => {
@@ -51,7 +51,7 @@ export default function Header({
     signOut();
   };
 
-  const handleSignIn = (
+  const handleSignIn = async (
     event: React.MouseEvent<HTMLButtonElement, MouseEvent>
   ) => {
     event.preventDefault();

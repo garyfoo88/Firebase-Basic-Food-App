@@ -7,9 +7,9 @@ import { useState, useEffect } from "react";
 import {
   getRestaurantSnapshotById,
   getReviewsSnapshotByRestaurantId,
-} from "@/src/lib/firebase/firestore.js";
+} from "@/src/lib/firebase/firestore";
 import { GetUser } from "@/src/lib/GetUser";
-import { updateRestaurantImage } from "@/src/lib/firebase/storage.js";
+import { updateRestaurantImage } from "@/src/lib/firebase/storage";
 import ReviewDialog from "@/src/components/ReviewDialog";
 import RestaurantDetails from "@/src/components/RestaurantDetails";
 import ReviewsList from "@/src/components/ReviewList";

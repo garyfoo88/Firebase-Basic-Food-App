@@ -25,8 +25,8 @@ const ReviewDialog = ({
     <dialog open={isOpen}>
       <div className="box">
         <form
-          action={(formData: FormData) => {
-            handleReviewFormSubmission(formData);
+          action={async (formData: FormData) => {
+            await handleReviewFormSubmission(formData);
           }}
           onSubmit={() => {
             handleClose();

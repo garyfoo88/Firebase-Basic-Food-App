@@ -3,11 +3,7 @@
 import { addReviewToRestaurant } from "@/src/lib/firebase/firestore";
 import { getAuthenticatedAppForUser } from "@/src/lib/firebase/firebase";
 import { getFirestore } from "firebase/firestore";
-import { Firestore } from "firebase-admin/firestore";
 
-// This is a next.js server action, an alpha feature, so
-// use with caution
-// https://nextjs.org/docs/app/building-your-application/data-fetching/server-actions
 export async function handleReviewFormSubmission(data: FormData) {
   const { app } = await getAuthenticatedAppForUser();
   if (!app || !data) return;
