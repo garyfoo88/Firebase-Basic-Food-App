@@ -59,7 +59,7 @@ const updateWithRating = async (
 export async function addReviewToRestaurant(
   db: Firestore,
   restaurantId: string,
-  review: { rating: string }
+  review: { rating: string; text: string; userId: string }
 ) {
   if (!restaurantId) {
     throw new Error("No restaurant ID has been provided.");

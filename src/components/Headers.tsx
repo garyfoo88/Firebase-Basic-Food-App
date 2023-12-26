@@ -10,7 +10,7 @@ import { addFakeRestaurantsAndReviews } from "@/src/lib/firebase/firestore";
 import { useRouter } from "next/navigation";
 import { User } from "firebase/auth";
 
-function useUserSession(initialUser: User | null) {
+function useUserSession(initialUser: User | null | undefined) {
   // The initialUser comes from the server via a server component
   const [user, setUser] = useState(initialUser);
   const router = useRouter();
@@ -41,7 +41,7 @@ function useUserSession(initialUser: User | null) {
 
 export default function Header({
   initialUser,
-}: Readonly<{ initialUser: User | null }>) {
+}: Readonly<{ initialUser: User | null | undefined }>) {
   const user = useUserSession(initialUser);
 
   const handleSignOut = (

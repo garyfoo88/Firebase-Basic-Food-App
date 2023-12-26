@@ -29,12 +29,12 @@ export type ImageCover = { photo: string; name: string };
 const RestaurantItem = ({ restaurant }: Restaurants) => (
   <li key={restaurant.id}>
     <Link href={`/restaurant/${restaurant.id}`}>
-      <ActiveResturant restaurant={restaurant} />
+      <ActiveRestaurant restaurant={restaurant} />
     </Link>
   </li>
 );
 
-const ActiveResturant = ({ restaurant }: Restaurants) => (
+const ActiveRestaurant = ({ restaurant }: Restaurants) => (
   <div>
     <ImageCover photo={restaurant.photo} name={restaurant.name} />
     <ResturantDetails restaurant={restaurant} />

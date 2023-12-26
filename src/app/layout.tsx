@@ -20,7 +20,7 @@ export default async function RootLayout({
   return (
     <html lang="en">
       <body>
-        {currentUser && <Header initialUser={currentUser} />}
+       <Header initialUser={currentUser} />
         <main>{children}</main>
       </body>
     </html>
