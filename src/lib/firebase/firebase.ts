@@ -2,12 +2,15 @@ import { initializeApp, getApps } from "firebase/app";
 import {
   initializeApp as initializeAdminApp,
   getApps as getAdminApps,
+  ServiceAccount,
+  AppOptions,
 } from "firebase-admin/app";
 import { getAuth as getAdminAuth } from "firebase-admin/auth";
 import { getAuth } from "firebase/auth";
 import { getFirestore } from "firebase/firestore";
 import { getStorage } from "firebase/storage";
 import { credential } from "firebase-admin";
+import serviceAccount from "@/src/lib/firebase/firebase-config";
 
 export const firebaseConfig = {
   apiKey: process.env.NEXT_PUBLIC_FIREBASE_API_KEY,
@@ -37,16 +40,13 @@ export async function getAuthenticatedAppForUser(
     };
   }
 
-  const ADMIN_APP_NAME = "firebase-frameworks";
+  const ADMIN_APP_NAME = "basic-firebase-foodapp";
   const adminApp =
     getAdminApps().find((it) => it.name === ADMIN_APP_NAME) ??
     initializeAdminApp(
-      {
-        credential: credential.applicationDefault(),
-      },
+      credential.cert(serviceAccount as ServiceAccount) as AppOptions,
       ADMIN_APP_NAME
     );
-
   const adminAuth = getAdminAuth(adminApp);
   const noSessionReturn = { app: null, currentUser: null };
 
@@ -58,26 +58,9 @@ export async function getAuthenticatedAppForUser(
   }
 
   const decodedIdToken = await adminAuth.verifyIdToken(session);
-
   const app = initializeAuthenticatedApp(decodedIdToken.uid);
   const auth = getAuth(app);
 
-  // handle revoked tokens
-  const isRevoked = !(await adminAuth
-    .verifyIdToken(session, true)
-    .catch((e) => console.error(e.message)));
-  if (isRevoked) return noSessionReturn;
-
-  //  authenticate with custom token (Commented out due to infinite signin loop)
-  // if (auth.currentUser?.uid !== decodedIdToken.uid) {
-  //   const customToken = await adminAuth
-  //     .createCustomToken(decodedIdToken.uid)
-  //     .catch((e) => console.error(e.message));
-
-  //   if (!customToken) return noSessionReturn;
-
-  //   await signInWithCustomToken(auth, customToken);
-  // }
   console.log("server: ", app);
   return { app, currentUser: auth.currentUser };
 }
