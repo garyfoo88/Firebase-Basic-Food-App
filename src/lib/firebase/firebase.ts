@@ -70,7 +70,6 @@ export async function getAuthenticatedAppForUser(
 
   //  authenticate with custom token (Commented out due to infinite signin loop)
   // if (auth.currentUser?.uid !== decodedIdToken.uid) {
-  //   // TODO(jamesdaniels) get custom claims
   //   const customToken = await adminAuth
   //     .createCustomToken(decodedIdToken.uid)
   //     .catch((e) => console.error(e.message));
